@@ -1,0 +1,78 @@
+1. Core Financial Measures
+
+dax
+Total Revenue =
+SUM( amazon[discounted_price] )
+
+dax
+Total Marketing Spend =
+SUM( 'SaaS-Sales'[Marketing Spend] )
+
+dax
+Total Profit =
+SUM( 'Amazon Financial Dataset'[Profit] )
+
+
+2. Ratio & Percentage Measures
+
+dax
+Profit Margin % =
+DIVIDE( [Total Profit], [Total Revenue], 0 )
+
+dax
+Marketing ROI =
+DIVIDE( [Total Profit], [Total Marketing Spend], 0 )
+
+dax
+Customer Acquisition Cost (CAC) =
+DIVIDE( [Total Marketing Spend], [Total Revenue], 0 )
+
+
+3. Product‑Level Measures (Sales Detail)
+
+dax
+Discount % =
+DIVIDE(
+    SUM( amazon[actual_price] ) - SUM( amazon[discounted_price] ),
+    SUM( amazon[actual_price] ),
+    0
+)
+
+dax
+Revenue per Product =
+SUMX(
+    amazon,
+    amazon[discounted_price] * amazon[rating_count]
+)
+
+
+4. Operational & Staffing Measures
+
+dax
+R&D Spend =
+SUM( 'Amazon Financial Dataset'[R&D Spend] )
+
+dax
+Profit per Employee =
+DIVIDE(
+    [Total Profit],
+    SUM( 'Amazon Financial Dataset'[Employee Count] ),
+    0
+)
+
+
+5. Date‑Table Definitions (for completeness)
+
+dax
+MonthYearTable =
+ADDCOLUMNS(
+    CALENDAR( DATE(2023,1,1), DATE(2024,12,31) ),
+    "Month-Year", FORMAT( [Date], "MM-yyyy" )
+)
+
+dax
+UniqueMonthYear =
+SUMMARIZE(
+    MonthYearTable,
+    MonthYearTable[Month-Year]
+)
